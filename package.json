@@ -1,11 +1,16 @@
 {
   "name": "workspace",
   "version": "1.0.0",
-  "description": ",-----.,--.                  ,--. ,---.   ,--.,------.  ,------.     '  .--./|  | ,---. ,--.,--. ,-|  || o   \\  |  ||  .-.  \\ |  .---'     |  |    |  || .-. ||  ||  |' .-. |`..'  |  |  ||  |  \\  :|  `--,      '  '--'\\|  |' '-' ''  ''  '\\ `-' | .'  /   |  ||  '--'  /|  `---.      `-----'`--' `---'  `----'  `---'  `--'    `--'`-------' `------'     -----------------------------------------------------------------",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --watch dev -e js dev/api.js"
+    "start": "npm-run-all --parallel node_0 node_1 node_2 node_3 node_4",
+    "node_0": "nodemon --watch dev -e js dev/networkNode.js 3000",
+    "node_1": "nodemon --watch dev -e js dev/networkNode.js 3001",
+    "node_2": "nodemon --watch dev -e js dev/networkNode.js 3002",
+    "node_3": "nodemon --watch dev -e js dev/networkNode.js 3003",
+    "node_4": "nodemon --watch dev -e js dev/networkNode.js 3004"
   },
   "author": "",
   "license": "ISC",
@@ -13,7 +18,12 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "nodemon": "^1.18.8",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
     "sha256": "^0.2.0",
     "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
   }
 }
