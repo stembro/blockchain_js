@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+const port = process.argv[2] || process.env.PORT || 8080; 
 const node_address = uuid().split('-').join('');
 const bitcoin = new Blockchain();
  
@@ -45,7 +46,7 @@ app.get('/mine', function(req, res) {
     });
 });
  
-app.listen(process.env.PORT, () => {
+app.listen(port, () => {
     console.log(`Listening on port: ${process.env.PORT}`);
 });
 
