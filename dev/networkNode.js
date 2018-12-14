@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const port = process.argv[2] || process.env.PORT || 3000; 
-const current_node_url = `http://127.0.0.1:${port}`;
+const current_node_url = `http://localhost:${port}`;
 const node_address = uuid().split('-').join('');
 const bitcoin = new Blockchain(current_node_url);
 
@@ -56,14 +56,14 @@ app.get('/mine', function(req, res) {
 app.post('/register-and-broadcast-node', function (req, res) {
     console.log("register-and-broadcast-node");
     const new_node_url = req.body.newNodeUrl;
-    if (!bitcoin.network_nodes.includes(new_node_url)) {
+    if (isNewNode(new_node_url)) {
         bitcoin.network_nodes.push(new_node_url);
         const requests = [];
         bitcoin.network_nodes.forEach(network_node_url => {
             const request_options = {
                 uri: `${network_node_url}/register-node`,
                 method: 'POST',
-                body: { newNodeUrl: network_node_url },
+                body: { newNodeUrl: new_node_url },
                 json: true
             };
             requests.push(rp(request_options));
@@ -82,6 +82,8 @@ app.post('/register-and-broadcast-node', function (req, res) {
             .then(data => {
                 res.json({ note: 'New Node registered with network successfully' });
             });
+    } else {
+        res.json({ note: 'Node already known to network.' });
     }
 });
 
@@ -91,9 +93,10 @@ app.post('/register-node', function (req, res) {
 
     if (isNewNode(new_node_url)) {
         bitcoin.network_nodes.push(new_node_url);
+        res.json({ note: 'New node registered successfully.' });
+    } else {
+        res.json({ note: 'Node already known to network.' });
     }
-
-    res.json({ note: 'New node registered successfully.' });
 });
 
 app.post('/register-nodes-bulk', function (req, res) {
